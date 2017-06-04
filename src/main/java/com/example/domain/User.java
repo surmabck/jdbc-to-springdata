@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * Created by surmab on 06.04.2017.
  */
-@Builder
 @NoArgsConstructor
 @EqualsAndHashCode
 public class User implements  Persistable<Long>{
@@ -35,24 +34,27 @@ public class User implements  Persistable<Long>{
         this.bookRents = bookRents;
     }
 
-    public void setId(Long id) {
+    public User setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    public User setUserName(String userName) {
         this.userName = userName;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     @Override

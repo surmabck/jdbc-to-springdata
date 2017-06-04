@@ -1,4 +1,4 @@
-package com.example;
+package com.example.integration;
 
 import com.example.domain.Book;
 import com.example.domain.Rent;
@@ -35,67 +35,64 @@ import static org.junit.Assert.assertNull;
         TransactionalTestExecutionListener.class})
 @SpringBootTest
 @ActiveProfiles("test")
-public class RentsRepositoryTest {
-    @Autowired
-    private BookRepository bookRepository;
+public class UsersRepositoryIT {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RentRepository rentRepository;
-    User user = User.builder().userName("USER1").password("USER1").id(0L).build();
-    Book book1 = Book.builder().ISBN("ISBN1").name("BOOK1").build();
-    Book book2 = Book.builder().ISBN("ISBN2").name("BOOK2").build();
-    Rent rent1 = Rent.builder().book(book1).user(user).id(0L).build();
-    Rent rent2 = Rent.builder().book(book2).user(user).id(1L).build();
+
+    User user = new User().setUserName("USER1").setPassword("USER1").setId(0L);
+    User user2 = new User().setUserName("USER2").setPassword("USER2").setId(1L);
+    User user3 = new User().setUserName("USER3").setPassword("USER3").setId(2L);
+    User user4 = new User().setUserName("USER4").setPassword("USER4").setId(3L);
 
     @Before
     public void setUp(){
-
-        bookRepository.save(book1);
-        bookRepository.save(book2);
         userRepository.save(user);
-        rentRepository.save(rent1);
-        rentRepository.save(rent2);
+        userRepository.save(user2);
+        userRepository.save(user3);
     }
     @After
     public void tearDown(){
-        rentRepository.delete(rent1);
-        rentRepository.delete(rent2);
-        bookRepository.delete(book1);
-        bookRepository.delete(book2);
-        userRepository.delete(user);
-    }
 
+        userRepository.delete(user);
+        userRepository.delete(user2);
+        userRepository.delete(user3);
+        userRepository.delete(user4);
+    }
 
     @Test
     public void findAllTest() {
-        List<Rent> allRents = rentRepository.findAll();
-        assertEquals(2, allRents.size());
-
+        List<User> allUsers = userRepository.findAll();
+        assertEquals(3,allUsers.size());
+        assertEquals(user,allUsers.get(0));
+        assertEquals(user2,allUsers.get(1));
+        assertEquals(user3,allUsers.get(2));
     }
     @Test
     public void findByIdTest(){
-        Rent rent = rentRepository.findById(0L);
-        assertEquals(book1,rent.getBook());
-        assertEquals(user,rent.getUser());
+        User user = userRepository.findById(0L);
+        assertEquals(0L,(long)user.getId());
+        assertEquals("USER1",user.getPassword());
+        assertEquals("USER1",user.getUserName());
     }
-//    @Test
-//    public void deleteTest(){
-//        Book book = bookRepository.findById("ISBN1");
-//        assertEquals("ISBN1",book.getId());
-//        assertEquals("BOOK1",book.getName());
-//        bookRepository.delete(book);
-//        book = bookRepository.findById("ISBN1");
-//        assertNull(book);
-//
-//    }
-//    @Test
-//    public void saveTest(){
-//        Book book = bookRepository.findById("ISBN_TEST");
-//        assertNull(book);
-//        book = bookRepository.findById("ISBN_TEST");
-//        assertEquals("ISBN_TEST",book.getISBN());
-//        assertEquals("NAME_TEST",book.getName());
-//    }
+    @Test
+    public void deleteTest(){
+        User user = userRepository.findById(0L);
+        assertEquals(0L,(long)user.getId());
+        assertEquals("USER1",user.getPassword());
+        assertEquals("USER1",user.getUserName());
+        userRepository.delete(user);
+        user = userRepository.findById(0L);
+        assertNull(user);
 
+    }
+    @Test
+    public void saveTest(){
+        User user = userRepository.findById(3L);
+        assertNull(user);
+        userRepository.save(user4);
+        user = userRepository.findById(3L);
+        assertEquals(3L,(long)user.getId());
+        assertEquals("USER4",user.getPassword());
+        assertEquals("USER4",user.getUserName());
+    }
 }

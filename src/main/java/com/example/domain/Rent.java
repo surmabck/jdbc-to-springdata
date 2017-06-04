@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
  * Created by surmab on 31.05.2017.
  */
 @NoArgsConstructor
-@Builder
 public class Rent {
     private Long id;
     private Book book;
@@ -17,24 +16,27 @@ public class Rent {
         return id;
     }
 
-    public void setId(Long id) {
+    public Rent setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public Book getBook() {
         return book;
     }
 
-    public void setBook(Book book) {
+    public Rent setBook(Book book) {
         this.book = book;
+        return this;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public Rent setUser(User user) {
         this.user = user;
+        return this;
     }
 
     public Rent(Long id) {

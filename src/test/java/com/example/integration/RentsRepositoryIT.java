@@ -1,4 +1,4 @@
-package com.example;
+package com.example.integration;
 
 import com.example.domain.Book;
 import com.example.domain.Rent;
@@ -35,64 +35,71 @@ import static org.junit.Assert.assertNull;
         TransactionalTestExecutionListener.class})
 @SpringBootTest
 @ActiveProfiles("test")
-public class UsersRepositoryTest {
+public class RentsRepositoryIT {
+    @Autowired
+    private BookRepository bookRepository;
     @Autowired
     private UserRepository userRepository;
-
-    User user = User.builder().userName("USER1").password("USER1").id(0L).build();
-    User user2 = User.builder().userName("USER2").password("USER2").id(1L).build();
-    User user3 = User.builder().userName("USER3").password("USER3").id(2L).build();
-    User user4 = User.builder().userName("USER4").password("USER4").id(3L).build();
+    @Autowired
+    private RentRepository rentRepository;
+    User user = new User().setUserName("USER1").setPassword("USER1").setId(0L);
+    Book book1 = new Book().setISBN("ISBN1").setName("BOOK1");
+    Book book2 = new Book().setISBN("ISBN2").setName("BOOK2");
+    Rent rent1 = new Rent().setBook(book1).setUser(user).setId(0L);
+    Rent rent2 = new Rent().setBook(book2).setUser(user).setId(1L);
+    Rent rent3 = new Rent().setBook(book2).setUser(user).setId(4L);
 
     @Before
     public void setUp(){
+
+        bookRepository.save(book1);
+        bookRepository.save(book2);
         userRepository.save(user);
-        userRepository.save(user2);
-        userRepository.save(user3);
+        rentRepository.save(rent1);
+        rentRepository.save(rent2);
     }
     @After
     public void tearDown(){
-
+        rentRepository.delete(rent1);
+        rentRepository.delete(rent2);
+        rentRepository.delete(rent3);
+        bookRepository.delete(book1);
+        bookRepository.delete(book2);
         userRepository.delete(user);
-        userRepository.delete(user2);
-        userRepository.delete(user3);
-        userRepository.delete(user4);
     }
+
 
     @Test
     public void findAllTest() {
-        List<User> allUsers = userRepository.findAll();
-        assertEquals(3,allUsers.size());
-        assertEquals(user,allUsers.get(0));
-        assertEquals(user2,allUsers.get(1));
-        assertEquals(user3,allUsers.get(2));
-    }
-    @Test
-    public void findByIdTest(){
-        User user = userRepository.findById(0L);
-        assertEquals(0L,(long)user.getId());
-        assertEquals("USER1",user.getPassword());
-        assertEquals("USER1",user.getUserName());
-    }
-    @Test
-    public void deleteTest(){
-        User user = userRepository.findById(0L);
-        assertEquals(0L,(long)user.getId());
-        assertEquals("USER1",user.getPassword());
-        assertEquals("USER1",user.getUserName());
-        userRepository.delete(user);
-        user = userRepository.findById(0L);
-        assertNull(user);
+        List<Rent> allRents = rentRepository.findAll();
+        assertEquals(2, allRents.size());
 
     }
     @Test
-    public void saveTest(){
-        User user = userRepository.findById(3L);
-        assertNull(user);
-        userRepository.save(user4);
-        user = userRepository.findById(3L);
-        assertEquals(3L,(long)user.getId());
-        assertEquals("USER4",user.getPassword());
-        assertEquals("USER4",user.getUserName());
+    public void findByIdTest(){
+        Rent rent = rentRepository.findById(0L);
+        assertEquals(book1,rent.getBook());
+        assertEquals(user,rent.getUser());
     }
+    @Test
+    public void deleteTest(){
+        Rent rent = rentRepository.findById(0L);
+        assertEquals(0L,(long) rent.getId());
+        assertEquals(book1,rent.getBook());
+        assertEquals(user,rent.getUser());
+        rentRepository.delete(rent);
+        rent = rentRepository.findById(0L);
+        assertNull(rent);
+    }
+    @Test
+    public void saveTest(){
+        Rent rent = rentRepository.findById(4L);
+        assertNull(rent);
+        rentRepository.save(rent3);
+        rent = rentRepository.findById(4L);
+        assertEquals(4L,(long)rent.getId());
+        assertEquals(book2,rent.getBook());
+        assertEquals(user,rent.getUser());
+    }
+
 }

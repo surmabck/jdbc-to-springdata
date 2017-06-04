@@ -4,6 +4,8 @@ import com.example.domain.Book;
 import com.example.domain.Rent;
 import com.example.domain.User;
 import com.example.factory.BookFactory;
+import com.example.factory.RentFactory;
+import com.example.factory.UserFactory;
 import com.example.repository.BookRepository;
 import com.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,10 @@ public class LoadDummyData implements CommandLineRunner {
     private UserRepository userRepository;
     private BookRepository bookRepository;
     private BookFactory bookFactory;
+    @Autowired
+    private RentFactory rentFactory;
+    @Autowired
+    private UserFactory userFactory;
 
 
     @Autowired
@@ -36,15 +42,15 @@ public class LoadDummyData implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        Book book1 = Book.builder().ISBN("ISBN1").name("BOOK1").build();
-        Book book2 = Book.builder().ISBN("ISBN2").name("BOOK2").build();
-        Book book3 = Book.builder().ISBN("ISBN3").name("BOOK3").build();
-        User user1 = User.builder().id(0L).userName("user1").password("user1").build();
-        User user2 = User.builder().id(1L).userName("user2").password("user3").build();
-        User user3 = User.builder().id(2L).userName("user3").password("user3").build();
-        Rent rent1 = Rent.builder().book(book1).user(user1).build();
-        Rent rent2 = Rent.builder().book(book2).user(user2).build();
-        Rent rent3 = Rent.builder().book(book3).user(user3).build();
+        Book book1 = bookFactory.create().setISBN("ISBN1").setName("BOOK1");
+        Book book2 = bookFactory.create().setISBN("ISBN2").setName("BOOK2");
+        Book book3 = bookFactory.create().setISBN("ISBN3").setName("BOOK3");
+        User user1 = userFactory.create().setId(0L).setUserName("user1").setPassword("user1");
+        User user2 = userFactory.create().setId(1L).setUserName("user2").setPassword("user3");
+        User user3 = userFactory.create().setId(2L).setUserName("user3").setPassword("user3");
+        Rent rent1 = rentFactory.create().setBook(book1).setUser(user1);
+        Rent rent2 = rentFactory.create().setBook(book2).setUser(user2);
+        Rent rent3 = rentFactory.create().setBook(book3).setUser(user3);
         bookRepository.save(book1);
         bookRepository.save(book2);
         bookRepository.save(book3);

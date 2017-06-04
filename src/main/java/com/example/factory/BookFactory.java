@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Builder
 @NoArgsConstructor
-public class BookFactory {
+public class BookFactory implements DomainFactory<Book> {
 
-    public Book createBook(){
+    public Book create(){
         return new Book();
     }
 

@@ -1,4 +1,4 @@
-package com.example;
+package com.example.integration;
 
 import com.example.domain.Book;
 import com.example.repository.BookRepository;
@@ -29,11 +29,11 @@ import static org.junit.Assert.assertNull;
 		TransactionalTestExecutionListener.class})
 @SpringBootTest
 @ActiveProfiles("test")
-public class BookRepositoryTest {
-	Book book1 = Book.builder().ISBN("ISBN1").name("BOOK1").build();
-	Book book2 = Book.builder().ISBN("ISBN2").name("BOOK2").build();
-	Book book3 = Book.builder().ISBN("ISBN3").name("BOOK3").build();
-	Book book4 = Book.builder().ISBN("ISBN_TEST").name("NAME_TEST").build();
+public class BookRepositoryIT {
+	Book book1 = new Book().setISBN("ISBN1").setName("BOOK1");
+	Book book2 = new Book().setISBN("ISBN2").setName("BOOK2");
+	Book book3 = new Book().setISBN("ISBN3").setName("BOOK3");
+	Book book4 = new Book().setISBN("ISBN_TEST").setName("NAME_TEST");
 
 	@Before
 	public void setUp(){
@@ -51,7 +51,6 @@ public class BookRepositoryTest {
 	}
 	@Autowired
 	private BookRepository bookRepository;
-
 	@Test
 	public void findAllTest() {
 		List<Book> allBooks = bookRepository.findAll();

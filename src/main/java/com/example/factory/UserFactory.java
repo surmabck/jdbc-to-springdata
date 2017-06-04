@@ -11,10 +11,9 @@ import org.springframework.stereotype.Component;
  */
 @NoArgsConstructor
 @Component
-public class UserFactory {
+public class UserFactory implements DomainFactory<User> {
 
-    public User createUser(){
-        User user = new User();
-        return user;
+    public User create(){
+        return new User();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.configuration;
 
 import com.example.factory.BookFactory;
+import com.example.factory.DomainFactory;
 import com.example.factory.UserFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +28,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public UserFactory userFactory(){
+    public DomainFactory userFactory(){
         return new UserFactory();
     }
 }
