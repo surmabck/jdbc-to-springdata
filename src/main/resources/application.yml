@@ -1,0 +1,5 @@
+configuration:
+  book:
+    greeting: "To jest ksiazka"
+  user:
+    greeting: "Hej uzytkowniku"
