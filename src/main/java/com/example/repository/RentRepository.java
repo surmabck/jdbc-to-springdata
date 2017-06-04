@@ -40,23 +40,15 @@ public class RentRepository extends Repository<Rent,Long> {
     public void setDb(HsqlDatabase db) {
         this.db = db;
     }
-
-
-    @Autowired
     public void setRentFactory(RentFactory rentFactory) {
         this.rentFactory = rentFactory;
     }
-
     public DomainFactory getUserFactory() {
         return userFactory;
     }
-    @Autowired
     public void setUserFactory(DomainFactory userFactory) {
         this.userFactory = userFactory;
     }
-
-
-    @Autowired
     public void setBookFactory(BookFactory bookFactory) {
         this.bookFactory = bookFactory;
     }
@@ -64,6 +56,9 @@ public class RentRepository extends Repository<Rent,Long> {
     @Autowired
     public RentRepository(HsqlDatabase db) {
         this.db = db;
+        bookFactory = new BookFactory();
+        rentFactory = new RentFactory();
+        userFactory = new UserFactory();
     }
 
     @Override

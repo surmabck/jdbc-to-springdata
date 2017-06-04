@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 /**
  * Created by surmab on 06.04.2017.
  */
-@Component
 @Builder
 @NoArgsConstructor
 public class BookFactory implements DomainFactory<Book> {

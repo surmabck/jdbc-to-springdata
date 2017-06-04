@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 /**
  * Created by surmab on 01.06.2017.
  */
-@Component
 public class RentFactory implements DomainFactory<Rent>{
     public Rent create(){
         return new Rent();

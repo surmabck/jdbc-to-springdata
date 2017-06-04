@@ -26,18 +26,15 @@ public class LoadDummyData implements CommandLineRunner {
 
     private UserRepository userRepository;
     private BookRepository bookRepository;
-    private BookFactory bookFactory;
-    @Autowired
-    private RentFactory rentFactory;
-    @Autowired
-    private UserFactory userFactory;
+    private BookFactory bookFactory = new BookFactory();
+    private RentFactory rentFactory = new RentFactory();
+    private UserFactory userFactory = new UserFactory();
 
 
     @Autowired
     public LoadDummyData(UserRepository userRepository, BookRepository bookRepository, BookFactory bookFactory) {
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
-        this.bookFactory = bookFactory;
     }
 
     @Override

@@ -46,9 +46,9 @@ public class UserRepository extends Repository<User,Long> {
     }
 
     @Autowired
-    public UserRepository(HsqlDatabase db, RentFactory rentFactory, UserFactory userFactory) {
+    public UserRepository(HsqlDatabase db) {
         this.db = db;
-        this.userFactory = userFactory;
+        this.userFactory = new UserFactory();
     }
 
     @Override

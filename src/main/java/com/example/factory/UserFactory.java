@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * Created by surmab on 06.04.2017.
  */
 @NoArgsConstructor
-@Component
 public class UserFactory implements DomainFactory<User> {
 
     public User create(){
