@@ -12,6 +12,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -42,37 +47,35 @@ public class RentsRepositoryIT {
     private UserRepository userRepository;
     @Autowired
     private RentRepository rentRepository;
+    private EmbeddedDatabase db;
+
     User user = new User().setUserName("USER1").setPassword("USER1").setId(0L);
     Book book1 = new Book().setISBN("ISBN1").setName("BOOK1");
     Book book2 = new Book().setISBN("ISBN2").setName("BOOK2");
     Rent rent1 = new Rent().setBook(book1).setUser(user).setId(0L);
     Rent rent2 = new Rent().setBook(book2).setUser(user).setId(1L);
-    Rent rent3 = new Rent().setBook(book2).setUser(user).setId(4L);
+    Rent rent3 = new Rent().setBook(book2).setUser(user).setId(2L);
+    Rent rent4 = new Rent().setBook(book2).setUser(user).setId(3L);
 
     @Before
     public void setUp(){
-
-        bookRepository.save(book1);
-        bookRepository.save(book2);
-        userRepository.save(user);
-        rentRepository.save(rent1);
-        rentRepository.save(rent2);
+        db = new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.HSQL)
+                .addScript("db_file.sql")
+                .addScript("db_insert.sql")
+                .build();
+        rentRepository.setJdbcTemplate(new JdbcTemplate(db));
     }
     @After
     public void tearDown(){
-        rentRepository.delete(rent1);
-        rentRepository.delete(rent2);
-        rentRepository.delete(rent3);
-        bookRepository.delete(book1);
-        bookRepository.delete(book2);
-        userRepository.delete(user);
-    }
+        db.shutdown();
 
+    }
 
     @Test
     public void findAllTest() {
         List<Rent> allRents = rentRepository.findAll();
-        assertEquals(2, allRents.size());
+        assertEquals(3, allRents.size());
 
     }
     @Test
@@ -81,25 +84,14 @@ public class RentsRepositoryIT {
         assertEquals(book1,rent.getBook());
         assertEquals(user,rent.getUser());
     }
-    @Test
+    @Test(expected = EmptyResultDataAccessException.class)
     public void deleteTest(){
-        Rent rent = rentRepository.findById(0L);
-        assertEquals(0L,(long) rent.getId());
-        assertEquals(book1,rent.getBook());
-        assertEquals(user,rent.getUser());
-        rentRepository.delete(rent);
-        rent = rentRepository.findById(0L);
-        assertNull(rent);
+        rentRepository.delete(rent1);
+        rentRepository.findById(0L);
     }
     @Test
     public void saveTest(){
-        Rent rent = rentRepository.findById(4L);
-        assertNull(rent);
-        rentRepository.save(rent3);
-        rent = rentRepository.findById(4L);
-        assertEquals(4L,(long)rent.getId());
-        assertEquals(book2,rent.getBook());
-        assertEquals(user,rent.getUser());
+        rentRepository.save(rent4);
     }
 
 }

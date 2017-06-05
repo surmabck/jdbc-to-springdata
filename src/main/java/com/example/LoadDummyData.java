@@ -39,20 +39,20 @@ public class LoadDummyData implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        Book book1 = bookFactory.create().setISBN("ISBN1").setName("BOOK1");
-        Book book2 = bookFactory.create().setISBN("ISBN2").setName("BOOK2");
-        Book book3 = bookFactory.create().setISBN("ISBN3").setName("BOOK3");
-        User user1 = userFactory.create().setId(0L).setUserName("user1").setPassword("user1");
-        User user2 = userFactory.create().setId(1L).setUserName("user2").setPassword("user3");
-        User user3 = userFactory.create().setId(2L).setUserName("user3").setPassword("user3");
-        Rent rent1 = rentFactory.create().setBook(book1).setUser(user1);
-        Rent rent2 = rentFactory.create().setBook(book2).setUser(user2);
-        Rent rent3 = rentFactory.create().setBook(book3).setUser(user3);
-        bookRepository.save(book1);
-        bookRepository.save(book2);
-        bookRepository.save(book3);
-        userRepository.save(user1);
-        userRepository.save(user2);
-        userRepository.save(user3);
+//        Book book1 = bookFactory.create().setISBN("ISBN1").setName("BOOK1");
+//        Book book2 = bookFactory.create().setISBN("ISBN2").setName("BOOK2");
+//        Book book3 = bookFactory.create().setISBN("ISBN3").setName("BOOK3");
+//        User user1 = userFactory.create().setId(0L).setUserName("user1").setPassword("user1");
+//        User user2 = userFactory.create().setId(1L).setUserName("user2").setPassword("user3");
+//        User user3 = userFactory.create().setId(2L).setUserName("user3").setPassword("user3");
+//        Rent rent1 = rentFactory.create().setBook(book1).setUser(user1);
+//        Rent rent2 = rentFactory.create().setBook(book2).setUser(user2);
+//        Rent rent3 = rentFactory.create().setBook(book3).setUser(user3);
+//        bookRepository.save(book1);
+//        bookRepository.save(book2);
+//        bookRepository.save(book3);
+//        userRepository.save(user1);
+//        userRepository.save(user2);
+//        userRepository.save(user3);
     }
 }

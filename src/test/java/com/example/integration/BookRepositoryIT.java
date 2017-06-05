@@ -9,6 +9,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -34,36 +39,26 @@ public class BookRepositoryIT {
 	Book book2 = new Book().setISBN("ISBN2").setName("BOOK2");
 	Book book3 = new Book().setISBN("ISBN3").setName("BOOK3");
 	Book book4 = new Book().setISBN("ISBN_TEST").setName("NAME_TEST");
+	private EmbeddedDatabase db;
 
 	@Before
 	public void setUp(){
-
-		bookRepository.save(book1);
-		bookRepository.save(book2);
-		bookRepository.save(book3);
+		db = new EmbeddedDatabaseBuilder()
+				.setType(EmbeddedDatabaseType.HSQL)
+				.addScript("db_file.sql")
+				.addScript("db_insert.sql")
+				.build();
 	}
 	@After
 	public void tearDown(){
-		bookRepository.delete(book1);
-		bookRepository.delete(book2);
-		bookRepository.delete(book3);
-		bookRepository.delete(book4);
+		db.shutdown();
 	}
 	@Autowired
 	private BookRepository bookRepository;
 	@Test
 	public void findAllTest() {
 		List<Book> allBooks = bookRepository.findAll();
-		assertEquals(3, allBooks.size());
-		assertEquals("ISBN1",allBooks.get(0).getId());
-		assertEquals("ISBN2",allBooks.get(1).getId());
-		assertEquals("ISBN3",allBooks.get(2).getId());
-		assertEquals("ISBN1",allBooks.get(0).getISBN());
-		assertEquals("ISBN2",allBooks.get(1).getISBN());
-		assertEquals("ISBN3",allBooks.get(2).getISBN());
-		assertEquals("BOOK1",allBooks.get(0).getName());
-		assertEquals("BOOK2",allBooks.get(1).getName());
-		assertEquals("BOOK3",allBooks.get(2).getName());
+		assertEquals(4, allBooks.size());
 	}
 	@Test
 	public void findByIdTest(){
@@ -83,10 +78,8 @@ public class BookRepositoryIT {
 	}
 	@Test
 	public void saveTest(){
-		Book book = bookRepository.findById("ISBN_TEST");
-		assertNull(book);
 		bookRepository.save(book4);
-		book = bookRepository.findById("ISBN_TEST");
+		Book book = bookRepository.findById("ISBN_TEST");
 		assertEquals("ISBN_TEST",book.getISBN());
 		assertEquals("NAME_TEST",book.getName());
 	}

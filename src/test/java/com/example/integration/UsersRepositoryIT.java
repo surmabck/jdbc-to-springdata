@@ -12,6 +12,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -38,6 +43,7 @@ import static org.junit.Assert.assertNull;
 public class UsersRepositoryIT {
     @Autowired
     private UserRepository userRepository;
+    private EmbeddedDatabase db;
 
     User user = new User().setUserName("USER1").setPassword("USER1").setId(0L);
     User user2 = new User().setUserName("USER2").setPassword("USER2").setId(1L);
@@ -46,26 +52,23 @@ public class UsersRepositoryIT {
 
     @Before
     public void setUp(){
-        userRepository.save(user);
-        userRepository.save(user2);
-        userRepository.save(user3);
+        db = new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.HSQL)
+                .addScript("db_file.sql")
+                .addScript("db_insert.sql")
+                .build();
+        userRepository.setJdbcTemplate(new JdbcTemplate(db));
     }
     @After
     public void tearDown(){
+        db.shutdown();
 
-        userRepository.delete(user);
-        userRepository.delete(user2);
-        userRepository.delete(user3);
-        userRepository.delete(user4);
     }
 
     @Test
     public void findAllTest() {
         List<User> allUsers = userRepository.findAll();
-        assertEquals(3,allUsers.size());
-        assertEquals(user,allUsers.get(0));
-        assertEquals(user2,allUsers.get(1));
-        assertEquals(user3,allUsers.get(2));
+        assertEquals(4,allUsers.size());
     }
     @Test
     public void findByIdTest(){
@@ -74,21 +77,19 @@ public class UsersRepositoryIT {
         assertEquals("USER1",user.getPassword());
         assertEquals("USER1",user.getUserName());
     }
-    @Test
+    @Test(expected = EmptyResultDataAccessException.class)
     public void deleteTest(){
-        User user = userRepository.findById(0L);
-        assertEquals(0L,(long)user.getId());
-        assertEquals("USER1",user.getPassword());
-        assertEquals("USER1",user.getUserName());
+        User user = userRepository.findById(1000L);
+        assertEquals(1000L,(long)user.getId());
+        assertEquals("TO_DELETE",user.getPassword());
+        assertEquals("TO_DELETE",user.getUserName());
         userRepository.delete(user);
-        user = userRepository.findById(0L);
+        user = userRepository.findById(1000L);
         assertNull(user);
 
     }
     @Test
     public void saveTest(){
-        User user = userRepository.findById(3L);
-        assertNull(user);
         userRepository.save(user4);
         user = userRepository.findById(3L);
         assertEquals(3L,(long)user.getId());
