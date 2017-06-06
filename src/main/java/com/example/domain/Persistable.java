@@ -5,5 +5,5 @@ package com.example.domain;
  */
 public interface Persistable<T> {
 
-    public T getId();
+    T getId();
 }

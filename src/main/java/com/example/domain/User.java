@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +13,15 @@ import java.util.List;
  */
 @NoArgsConstructor
 @EqualsAndHashCode
+@Entity(name = "USERS")
 public class User implements  Persistable<Long>{
-
+    @Id
+    @GeneratedValue
     private Long id;
+    @Column(name = "USERNAME")
     private String userName;
     private String password;
+    @OneToMany(mappedBy = "book")
     private List<Rent> bookRents;
 
     public User(Long id, String userName, String password, List<Rent> rents) {

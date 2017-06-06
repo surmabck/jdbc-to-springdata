@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <book isbn="1" name="Ridley Scott" />
+    <book isbn="2" name="James Cameron" />
+    <book isbn="3" name="David Fincher" />
+    <book isbn="4" name="Jean-Pierre Jeunet" />
+</dataset>

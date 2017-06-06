@@ -1,21 +1,28 @@
 package com.example.domain;
 
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by surmab on 06.04.2017.
  */
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Book implements Persistable<String> {
-
-    private String ISBN;
+@Entity
+@Table( name = "BOOKS")
+public class Book {
+    @Column(name="isbn")
+    @Id
+    private String isbn;
     private String name;
 
-    public Book(String ISBN, String name) {
-        this.ISBN = ISBN;
+    public Book(String isbn, String name) {
+        this.isbn = isbn;
         this.name = name;
     }
 
@@ -23,12 +30,12 @@ public class Book implements Persistable<String> {
         return name;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public Book setISBN(String isbn){
-        this.ISBN = isbn;
+    public Book setIsbn(String isbn){
+        this.isbn = isbn;
         return this;
     }
 
@@ -38,14 +45,9 @@ public class Book implements Persistable<String> {
     }
 
     @Override
-    public String getId() {
-        return ISBN;
-    }
-
-    @Override
     public String toString() {
         return " Book{" +
-                "ISBN='" + ISBN + '\'' +
+                "isbn='" + isbn + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

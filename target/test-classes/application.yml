@@ -1,10 +1,9 @@
 spring:
-#    datasource:
-#        url: jdbc:hsqldb:file:testdb
-#        name: production
-#        username: sa
-#        password:
-#        driver-class-name: org.hsqldb.jdbcDriver
+    datasource:
+        url: jdbc:hsqldb:file:testdb
+        username: sa
+        password:
+        driver-class-name: org.hsqldb.jdbcDriver
     jpa:
         database: HSQL
         database-platform: org.hibernate.dialect.HSQLDialect

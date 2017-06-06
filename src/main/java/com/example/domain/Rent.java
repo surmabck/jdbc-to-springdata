@@ -3,13 +3,22 @@ package com.example.domain;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
 /**
  * Created by surmab on 31.05.2017.
  */
 @NoArgsConstructor
+@Entity(name = "RENTS")
 public class Rent {
+    @Id
+    @GeneratedValue
     private Long id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="BOOKISBN", unique= true, nullable=true, insertable=true, updatable=true)
     private Book book;
+    @OneToOne
+    @JoinColumn(name="USERID", unique= true, nullable=true, insertable=true, updatable=true)
     private User user;
 
     public Long getId() {

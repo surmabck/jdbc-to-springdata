@@ -34,11 +34,7 @@ public class RentBookServiceImpl implements RentBookService {
 
         User remove = mapWithBookRent.remove(book);
 
-        if(remove != null) {
-            return true;
-        }else{
-           return false;
-        }
+        return remove != null;
 
     }
 }

@@ -11,17 +11,17 @@ import java.util.List;
 @Log4j2
 public abstract class Repository<T, U> {
 
-    public abstract T findById(U id);
-
-    public abstract List<T> findAll();
-
-    public abstract void save(T object);
-
-    public abstract void delete(T object);
-    public void logError(SQLException e) {
-        logError(e,"");
-    }
-    public void logError(SQLException e, String query) {
-        log.fatal("Query Failed : " + query, e);
-    }
+//    public abstract T findById(U id);
+//
+//    public abstract List<T> findAll();
+//
+//    public abstract void save(T object);
+//
+//    public abstract void delete(T object);
+//    public void logError(SQLException e) {
+//        logError(e,"");
+//    }
+//    public void logError(SQLException e, String query) {
+//        log.fatal("Query Failed : " + query, e);
+//    }
 }

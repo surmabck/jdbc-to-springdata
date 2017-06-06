@@ -8,7 +8,7 @@ import com.example.domain.User;
  */
 public interface RentBookService {
 
-    public boolean rentBook(User user, Book book);
+    boolean rentBook(User user, Book book);
 
-    public boolean returnBook(User user, Book book);
+    boolean returnBook(User user, Book book);
 }
