@@ -40,29 +40,16 @@ import static org.junit.Assert.assertNull;
         TransactionalTestExecutionListener.class})
 @SpringBootTest
 @ActiveProfiles("test")
-public class UsersRepositoryIT {
+public class UsersRepositoryIT extends AbstractRepositoryIT{
     @Autowired
     private UserRepository userRepository;
-    private EmbeddedDatabase db;
 
     User user = new User().setUserName("USER1").setPassword("USER1").setId(0L);
-    User user2 = new User().setUserName("USER2").setPassword("USER2").setId(1L);
-    User user3 = new User().setUserName("USER3").setPassword("USER3").setId(2L);
     User user4 = new User().setUserName("USER4").setPassword("USER4").setId(3L);
 
     @Before
-    public void setUp(){
-        db = new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.HSQL)
-                .addScript("db_file.sql")
-                .addScript("db_insert.sql")
-                .build();
+    public void setUpRepo(){
         userRepository.setJdbcTemplate(new JdbcTemplate(db));
-    }
-    @After
-    public void tearDown(){
-        db.shutdown();
-
     }
 
     @Test
@@ -84,9 +71,7 @@ public class UsersRepositoryIT {
         assertEquals("TO_DELETE",user.getPassword());
         assertEquals("TO_DELETE",user.getUserName());
         userRepository.delete(user);
-        user = userRepository.findById(1000L);
-        assertNull(user);
-
+        userRepository.findById(1000L);
     }
     @Test
     public void saveTest(){

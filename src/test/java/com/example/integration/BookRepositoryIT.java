@@ -34,25 +34,9 @@ import static org.junit.Assert.assertNull;
 		TransactionalTestExecutionListener.class})
 @SpringBootTest
 @ActiveProfiles("test")
-public class BookRepositoryIT {
-	Book book1 = new Book().setISBN("ISBN1").setName("BOOK1");
-	Book book2 = new Book().setISBN("ISBN2").setName("BOOK2");
-	Book book3 = new Book().setISBN("ISBN3").setName("BOOK3");
+public class BookRepositoryIT extends AbstractRepositoryIT {
 	Book book4 = new Book().setISBN("ISBN_TEST").setName("NAME_TEST");
-	private EmbeddedDatabase db;
 
-	@Before
-	public void setUp(){
-		db = new EmbeddedDatabaseBuilder()
-				.setType(EmbeddedDatabaseType.HSQL)
-				.addScript("db_file.sql")
-				.addScript("db_insert.sql")
-				.build();
-	}
-	@After
-	public void tearDown(){
-		db.shutdown();
-	}
 	@Autowired
 	private BookRepository bookRepository;
 	@Test

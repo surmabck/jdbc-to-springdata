@@ -21,12 +21,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class ApplicationConfiguration {
-
-    @Autowired
-    private BookConfiguration bookConfiguration;
-
-    @Autowired
-    private UserConfiguration userConfiguration;
+    
 
     @Bean
     public BookFactory bookFactory() {

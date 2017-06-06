@@ -41,7 +41,6 @@ public class UserRepository extends Repository<User,Long> {
     @Override
     public List<User> findAll() {
         return jdbcTemplate.query(FIND_ALL_QUERY, new UserMapper());
-
     }
 
     @Override
