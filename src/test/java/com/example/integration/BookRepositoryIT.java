@@ -1,46 +1,40 @@
 package com.example.integration;
 
-import com.example.configuration.ApplicationConfiguration;
+import com.example.annotations.RepositoryTestWithDBUnit;
 import com.example.domain.Book;
 import com.example.repository.BookRepository;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DbUnitConfiguration;
-import org.junit.Before;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-
+@RepositoryTestWithDBUnit
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-@ActiveProfiles("test")
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
-		DirtiesContextTestExecutionListener.class,
-		TransactionalTestExecutionListener.class,
-		DbUnitTestExecutionListener.class})
-@Transactional
-public class BookRepositoryIT{
-	Book book4 = new Book().setIsbn("ISBN_TEST").setName("NAME_TEST");
+@DatabaseSetup(value = "/BookRepositoryTest/sampleData.xml", type= DatabaseOperation.CLEAN_INSERT)
+public class BookRepositoryIT {
+	Book bookToDelete = new Book().setIsbn("TO_DELETE").setName("TO_DELETE");
+	Book bookToSave = new Book().setIsbn("TO_INSERT").setName("TO_INSERT");
 
 	@Autowired
 	private BookRepository bookRepository;
 
-	@DatabaseSetup("/META-INF/dbtest/sampleData.xml")
 	@Test
 	public void findAllTest() {
 
@@ -53,22 +47,19 @@ public class BookRepositoryIT{
 		assertEquals("ISBN1",book.getIsbn());
 		assertEquals("BOOK1",book.getName());
 	}
-//	@Test
-//	public void deleteTest(){
-//		Book book = bookRepository.findById("ISBN1");
-//		assertEquals("ISBN1",book.getId());
-//		assertEquals("BOOK1",book.getName());
-//		bookRepository.delete(book);
-//		book = bookRepository.findById("ISBN1");
-//		assertNull(book);
-//
-//	}
-//	@Test
-//	public void saveTest(){
-//		bookRepository.save(book4);
-//		Book book = bookRepository.findById("ISBN_TEST");
-//		assertEquals("ISBN_TEST",book.getIsbn());
-//		assertEquals("NAME_TEST",book.getName());
-//	}
+
+	@ExpectedDatabase("/BookRepositoryTest/deleteTest.xml")
+	@Test
+	public void deleteTest(){
+		bookRepository.delete(bookToDelete);
+		bookRepository.flush();
+	}
+
+	@ExpectedDatabase("/BookRepositoryTest/saveTest.xml")
+	@Test
+	public void saveTest(){
+		bookRepository.save(bookToSave);
+		bookRepository.flush();
+	}
 
 }

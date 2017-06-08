@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <users id="1000" username="USER1" password="USER1"/>
+    <books isbn="ISBN1" name="BOOK1" />
+    <books isbn="ISBN2" name="BOOK2" />
+    <books isbn="ISBN3" name="BOOK3" />
+    <books isbn="ISBN4" name="BOOK4" />
+    <rents id="1000" bookisbn="ISBN1" userid="1000"/>
+    <rents id="1001" bookisbn="ISBN2" userid="1000"/>
+    <rents id="1002" bookisbn="ISBN3" userid="1000"/>
+</dataset>

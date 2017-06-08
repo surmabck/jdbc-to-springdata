@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <books isbn="ISBN1" name="BOOK1" />
+    <books isbn="ISBN2" name="BOOK2" />
+    <books isbn="ISBN3" name="BOOK3" />
+    <books isbn="TO_DELETE" name="TO_DELETE" />
+    <books isbn="TO_INSERT" name="TO_INSERT" />
+    <rents/>
+    <users/>
+</dataset>

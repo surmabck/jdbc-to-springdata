@@ -1,14 +1,14 @@
-spring:
+#spring:
 #    datasource:
 #        url: jdbc:hsqldb:file:testdb
 #        name: production
 #        username: sa
 #        password:
 #        driver-class-name: org.hsqldb.jdbcDriver
-    jpa:
-        database: HSQL
-        database-platform: org.hibernate.dialect.HSQLDialect
-        show-sql: false
-        hibernate:
-            format_sql: true
-            ddl-auto: create
+#    jpa:
+#        database: HSQL
+#        database-platform: org.hibernate.dialect.HSQLDialect
+#        show-sql: false
+#        hibernate:
+#            format_sql: true
+#            ddl-auto: create

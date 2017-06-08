@@ -2,6 +2,7 @@ package com.example.domain;
 
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,15 +11,17 @@ import javax.persistence.*;
  */
 @NoArgsConstructor
 @Entity(name = "RENTS")
+@ToString
 public class Rent {
     @Id
     @GeneratedValue
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="BOOKISBN", unique= true, nullable=true, insertable=true, updatable=true)
     private Book book;
-    @OneToOne
-    @JoinColumn(name="USERID", unique= true, nullable=true, insertable=true, updatable=true)
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="USERID", nullable=false)
     private User user;
 
     public Long getId() {

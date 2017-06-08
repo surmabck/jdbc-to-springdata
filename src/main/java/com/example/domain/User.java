@@ -12,7 +12,7 @@ import java.util.List;
  * Created by surmab on 06.04.2017.
  */
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "bookRents")
 @Entity(name = "USERS")
 public class User implements  Persistable<Long>{
     @Id
@@ -21,8 +21,9 @@ public class User implements  Persistable<Long>{
     @Column(name = "USERNAME")
     private String userName;
     private String password;
-    @OneToMany(mappedBy = "book")
-    private List<Rent> bookRents;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Rent> bookRents = new ArrayList<>();
 
     public User(Long id, String userName, String password, List<Rent> rents) {
         this.id = id;

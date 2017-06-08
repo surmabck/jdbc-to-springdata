@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <books isbn="ISBN1" name="BOOK1" />
+    <books isbn="ISBN2" name="BOOK2" />
+    <books isbn="ISBN3" name="BOOK3" />
+    <rents/>
+    <users/>
+</dataset>
